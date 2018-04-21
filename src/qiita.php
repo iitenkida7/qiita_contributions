@@ -9,9 +9,12 @@ public function run($users)
     $data['columns'] = $this->getInfoColumns();
 
     foreach ($users as $user){
-        foreach( $this->itemFilter($this->getItem($user)) as $v){
-            $data['rows'][] = $v;
-        } 
+        $items = $this->getItem($user);
+        if( count($items) !== 0 ) {
+            foreach( $this->itemFilter($items) as $v){
+                $data['rows'][] = $v;
+            } 
+        }
     }
 
     return json_encode($data);
