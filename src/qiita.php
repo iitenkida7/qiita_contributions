@@ -20,11 +20,13 @@ public function run($users)
     return json_encode($data);
 }
 
-public function getApiToken()
+private function getApiToken()
 {
     if(! empty(getenv('QIITATOKEN'))){
        return  getenv('QIITATOKEN');
     }
+    return false ;
+      
 }
 
 
@@ -57,8 +59,17 @@ private function getInfoColumns()
 
 private function getItem($user)
 {
+
     $apiurl  ='https://qiita.com/api/v2/users/' .$user . '/items?page=1&per_page=100';
-    return json_decode(file_get_contents($apiurl), true);
+
+    $options = array('https' => array(
+        'method'  => 'GET',
+        'header' => 'Authorization: Bearer '.  $this->getApiToken()
+    ));
+
+    $context  = stream_context_create($options);
+
+    return json_decode(file_get_contents($apiurl, false, $context), true);
 }
 
 private function itemFilter($items)
