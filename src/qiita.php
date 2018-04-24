@@ -20,6 +20,13 @@ public function run($users)
     return json_encode($data);
 }
 
+public function getApiToken()
+{
+    if(! empty(getenv('QIITATOKEN'))){
+       return  getenv('QIITATOKEN');
+    }
+}
+
 
 private function getInfoColumns()
 {
